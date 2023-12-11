@@ -5,6 +5,8 @@ from tkinter import filedialog
 from main_check_label import check_2
 from main_check_value import *
 
+import pathlib
+
 link=""
 psr =''
 #sample function
@@ -41,7 +43,11 @@ def printMessage():
     sel()
     load_checkboxes(listCheckBoxRender, psr)
     messagebox.showinfo(title="show mess", message="Done. Xem kết quả ở file result")
-    psr.save('Dummy data/result.pptx')
+    
+    #create path to save result file
+    p = pathlib.PurePosixPath(link)
+    path_save = pathlib.PurePosixPath(p.parent).joinpath('result.pptx')
+    psr.save(path_save)
 #define element
 frame_form = LabelFrame(root, text="Chọn form powerpoint để check", padx=5,pady=5, font=('Arial', 10, 'bold'))
 frame_method = LabelFrame(root, text="Chọn hạng mục check", padx=5,pady=5, font=('Arial', 10, 'bold'))
@@ -95,6 +101,7 @@ def image( link_img):
     label_image.config(image=original_image)
     label_image.image = original_image
     label_image.pack(fill=BOTH, expand=1)
+    
 image('C:/Users/ADMIN/Desktop/code/python/Tkinter/formcheckpp/Dummy data/Dummy_shape.png') #xuat hien ban dau mac dinh la 1
 def showImg():
     Link = ''

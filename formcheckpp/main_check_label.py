@@ -10,7 +10,13 @@ from Func_check_label.render_coor import render_coor_label
 from Func_check_label.classify_shapes import classify_kind_of_shape
 from Func_check_label.find_label_connect import find_label_connect
 
+from tkinter import messagebox
+from pptx.util import Inches, Pt
+from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE
+from pptx.dml.color import RGBColor
+
 from pptx import Presentation
+
 
 # link_pp = 'C://Users//ADMIN//Desktop//code//python//Tkinter//formcheckpp//Dummy data//Dummy_pp.pptx'
 
@@ -40,8 +46,24 @@ def check_2(psr):
     print("list_text_table: ", list_text_table) #-----------------------data text table cuoi cung
     
     # check label with table 
-    true_label = check_label(list_text_table,render_label, list_label)       
+    if(len(list_text_table) > len(render_label)):
+        messagebox.showinfo("Thông báo", "Số lượng label chi tiết không khớp với số chi tiết trong bảng tổng hợp")
+
+        left = top = Inches(0.5)
+        (width,height)= (Inches(5), Inches(0.5))
+        textbox = slide.shapes.add_textbox(left, top, width, height)
+        textframe = textbox.text_frame
+        textframe.text = "Số lượng label chỉ chi tiết đang ít hơn với số chi tiết trong bảng!"
+        textframe.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
+        textframe.vertical_anchor = MSO_ANCHOR.MIDDLE
+        textframe.word_wrap = True
+        paragraph = textframe.paragraphs[0]
+        paragraph.font.color.rgb = RGBColor(255, 0, 0)
+        paragraph.font.size = Pt(25)
+        paragraph.font.bold = True
+        
     
+    true_label = check_label(list_text_table,render_label, list_label)       
     # draw fill label error
     err_labels = list_error (label_arrows, true_label)  
     fill_color_textBox(err_labels)
